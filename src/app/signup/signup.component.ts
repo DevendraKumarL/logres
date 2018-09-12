@@ -40,6 +40,7 @@ export class SignupComponent {
 			this.formErrMsg = "Passwords do not match";
 			return;
 		}
+		
 	}
 
 	clearSignUpForm() {
