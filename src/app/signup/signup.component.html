@@ -1,0 +1,69 @@
+<div class="row">
+    <div class="col-lg-4 col-md-4 card card-1" id="signup-form">
+        <h3 class="text-center">Sign Up</h3>
+        <form [formGroup]="signUpForm">
+            <div *ngIf="signUpForm.controls.name.invalid && (signUpForm.controls.name.dirty || signUpForm.controls.name.touched)">
+                <div class="text-danger" *ngIf="signUpForm.controls.name.errors.required">
+                    Username is required
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="text" name="name" placeholder="Username" class="form-control" formControlName="name">
+            </div>
+            <div *ngIf="signUpForm.controls.email.invalid && (signUpForm.controls.email.dirty || signUpForm.controls.email.touched)">
+                <div class="text-danger" *ngIf="signUpForm.controls.email.errors.required">
+                    Email is required
+                </div>
+            </div>
+            <div *ngIf="signUpForm.controls.email.invalid && (signUpForm.controls.email.dirty || signUpForm.controls.email.touched)">
+                <div class="text-danger" *ngIf="signUpForm.controls.email.errors.email">
+                    Email is invalid
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-at"></i></span>
+                </div>
+                <input type="email" name="email" placeholder="Email" class="form-control" formControlName="email">
+            </div>
+            <div *ngIf="signUpForm.controls.password.invalid && (signUpForm.controls.password.dirty || signUpForm.controls.password.touched)">
+                <div class="text-danger" *ngIf="signUpForm.controls.password.errors.required">
+                    Password is required
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                <input type="password" name="password" placeholder="Password" class="form-control" formControlName="password">
+            </div>
+            <div *ngIf="signUpForm.controls.password2.invalid && (signUpForm.controls.password2.dirty || signUpForm.controls.password2.touched)">
+                <div class="text-danger" *ngIf="signUpForm.controls.password2.errors.required">
+                    Re-type the password
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text text-warning"><i class="fas fa-key"></i></span>
+                </div>
+                <input type="password" name="password2" placeholder="Re-type Password" class="form-control"
+                    formControlName="password2">
+            </div>
+            <div class="input-group">
+                <div class="g-recaptcha" data-sitekey="6LfRym8UAAAAAG_YnB_5XxLk1vUMg3TfDwO1JliI"></div>
+            </div>
+            <br>
+            <div *ngIf="formError">
+                <div class="alert alert-danger">
+                    <b>{{formErrMsg}}</b>
+                </div>
+            </div>
+            <button type="button" class="btn btn-success btn-block" (click)="signUp()" [disabled]="!signUpForm.valid || formError">Let's
+                Go</button>
+            <button type="button" class="btn btn-link" (click)="clearSignUpForm()"><small>Clear</small></button>
+        </form>
+    </div>
+</div>
