@@ -12,6 +12,8 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { LogresWebService } from './services/logresweb.service';
+import { PNotifyService } from './services/pnotify.service';
 
 
 @NgModule({
@@ -29,7 +31,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 		HttpClientModule,
 		RouterModule.forRoot(routes)
 	],
-	providers: [],
+	providers: [LogresWebService, PNotifyService],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
