@@ -38,7 +38,7 @@
                 Let's Roll
             </button>
             <button type="button" class="btn btn-link" (click)="clearForms()"><small>Clear</small></button>
-            <button type="button" class="btn btn-link" (click)="showResetForm()"><small>Forgot Password?</small></button>
+            <button type="button" class="btn btn-link" (click)="switchForm($event, 'true')"><small>Forgot Password?</small></button>
         </form>
     </div>
 
@@ -61,8 +61,14 @@
                 </div>
                 <input type="email" name="resetEmail" placeholder="Email" class="form-control" formControlName="resetEmail">
             </div>
-            <button type="button" class="btn btn-info btn-block" (click)="resetRequest()" [disabled]="!resetReqForm.valid">Request</button>
-            <button type="button" class="btn btn-link" (click)="showLoginForm()"><small>Back to Login</small></button>
+            <div *ngIf="formError">
+                <div class="alert alert-danger">
+                    <b>{{formErrMsg}}</b>
+                </div>
+            </div>
+            <button type="button" class="btn btn-info btn-block" (click)="resetRequest()" [disabled]="!resetReqForm.valid || formError || logresWebService.sendingReq">Request</button>
+            <button type="button" class="btn btn-link" (click)="clearForms()"><small>Clear</small></button>
+            <button type="button" class="btn btn-link" (click)="switchForm($event, 'false')"><small>Back to Login</small></button>
         </form>
     </div>
 </div>

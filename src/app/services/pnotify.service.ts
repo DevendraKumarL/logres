@@ -9,7 +9,9 @@ export class PNotifyService {
 
 	getPNotify() {
 		PNotifyButtons;
-		return PNotify;
+		let pnotify = PNotify;
+		pnotify.defaults.width = '400px';
+		return pnotify;
 	}
 
 }

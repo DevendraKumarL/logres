@@ -62,12 +62,6 @@ export class SignupComponent {
 			return;
 		}
 
-		this.pnotify.alert({
-			text: 'Please wait...',
-			type: 'info',
-			icon: 'fa fa-spinner fa-spin'
-		});
-
 		let userData = {
 			name: this.signUpForm.controls.name.value,
 			email: this.signUpForm.controls.email.value,
@@ -75,8 +69,8 @@ export class SignupComponent {
 		};
 		this.logresWeb.register(userData).subscribe((response) => {
 			console.log("signUp() :: Success response: ", response);
+			this.pnotify.closeAll();
 			if (response['success'] === true) {
-				this.pnotify.closeAll();
 				this.pnotify.alert({
 					title: 'Success',
 					text: response['message'],
@@ -86,15 +80,15 @@ export class SignupComponent {
 			}
 			else {
 				this.formError = true;
-				this.formErrMsg = "Something went wrong. Please try again later";
-				this.pnotify.closeAll();
+				this.formErrMsg = response['message'];
 			}
 		}, (errResponse) => {
 			console.log("signUp() :: Error response: ", errResponse);
 			if (errResponse.error.error['email']) {
+				this.pnotify.closeAll();
 				this.formError = true;
 				this.formErrMsg = errResponse.error.error['email'][0];
-				this.pnotify.closeAll();
+				return;
 			}
 		});
 	}
