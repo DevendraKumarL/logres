@@ -1,0 +1,15 @@
+#profile-info {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+    padding-bottom: 10px;
+}
+
+.table-borderless > tbody > tr > td {
+    border:  none;
+}

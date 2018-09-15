@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-lg-6 col-md-8 card card-1" id="profile-info" *ngIf="profileInfo !== undefined">
+        <h3 class="text-center">Profile</h3>
+        <div>
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <td>
+                            <span><i class="fas fa-id-card-alt"></i> </span>
+                            <label>Username</label>
+                        </td>
+                        <td>{{profileInfo.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span><i class="fas fa-at"></i> </span>
+                            <label>Email</label>
+                        </td>
+                        <td>{{profileInfo.email}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span><i class="fas fa-user-circle"></i> </span>
+                            <label>Account Verified</label>
+                        </td>
+                        <td>
+                            <i class="fas fa-check-double text-success" *ngIf="profileInfo.is_verified === 1"></i>
+                            <i class="fas fa-times text-danger" *ngIf="profileInfo.is_verified === 0"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

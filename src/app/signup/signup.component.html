@@ -61,7 +61,7 @@
                     <b>{{formErrMsg}}</b>
                 </div>
             </div>
-            <button type="button" class="btn btn-success btn-block" (click)="signUp()" [disabled]="!signUpForm.valid || formError || signingUp">
+            <button type="button" class="btn btn-success btn-block" (click)="signUp()" [disabled]="!signUpForm.valid || logresWebService.sendingReq">
                 Let's Go
             </button>
             <button type="button" class="btn btn-link" (click)="clearSignUpForm()"><small>Clear</small></button>

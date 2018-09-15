@@ -16,14 +16,13 @@ export class SignupComponent {
 	public pnotify: any;
 
 	public signUpForm: FormGroup;
-	public signingUp: boolean = false;
 
 	public formError: boolean;
 	public formErrMsg: string;
 
 	constructor(
 		public formBuilder: FormBuilder,
-		public logresWeb: LogresWebService,
+		public logresWebService: LogresWebService,
 		public pnotifyService: PNotifyService,
 		public router: Router) {
 
@@ -34,28 +33,10 @@ export class SignupComponent {
 			password2: ["", Validators.compose([Validators.required])]
 		});
 
-		this.signUpForm.controls['password'].valueChanges.subscribe((value) => {
-			this.clearErrors();
-		});
-		this.signUpForm.controls['password2'].valueChanges.subscribe((value) => {
-			this.clearErrors();
-		});
-		this.signUpForm.controls['email'].valueChanges.subscribe((value) => {
-			this.clearErrors();
-		});
-
 		this.pnotify = this.pnotifyService.getPNotify();
 	}
 
-	clearErrors() {
-		this.formError = false;
-		this.formErrMsg = "";
-		this.signingUp = false;
-
-	}
-
 	signUp() {
-		this.signingUp = true;
 		if (this.signUpForm.controls.password.value !== this.signUpForm.controls.password2.value) {
 			this.formError = true;
 			this.formErrMsg = "Passwords do not match";
@@ -67,8 +48,9 @@ export class SignupComponent {
 			email: this.signUpForm.controls.email.value,
 			password: this.signUpForm.controls.password.value
 		};
-		this.logresWeb.register(userData).subscribe((response) => {
+		this.logresWebService.register(userData).subscribe((response) => {
 			console.log("signUp() :: Success response: ", response);
+			this.logresWebService.sendingReq = false;
 			this.pnotify.closeAll();
 			if (response['success'] === true) {
 				this.pnotify.alert({
@@ -84,10 +66,12 @@ export class SignupComponent {
 			}
 		}, (errResponse) => {
 			console.log("signUp() :: Error response: ", errResponse);
+			this.logresWebService.sendingReq = false;
+			this.pnotify.closeAll();
 			if (errResponse.error.error['email']) {
-				this.pnotify.closeAll();
 				this.formError = true;
-				this.formErrMsg = errResponse.error.error['email'][0];
+				this.formErrMsg = typeof errResponse.error['error'] === 'object' ?
+					errResponse.error.error['email'] : errResponse.error['error'];
 				return;
 			}
 		});
@@ -97,7 +81,6 @@ export class SignupComponent {
 		this.signUpForm.reset();
 		this.formError = false;
 		this.formErrMsg = "";
-		this.signingUp = false;
 		grecaptcha.reset();
 	}
 

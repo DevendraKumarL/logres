@@ -10,8 +10,8 @@ export class LogresWebService {
 	public sendingReq: boolean = false;
 
 	constructor(
-		public httpClient: HttpClient,
-		public pnotifyService: PNotifyService) {
+		private httpClient: HttpClient,
+		private pnotifyService: PNotifyService) {
 
 		this.pnotify = this.pnotifyService.getPNotify();
 	}
@@ -22,7 +22,13 @@ export class LogresWebService {
 	}
 
 	public login(loginData: any) {
+		this.showLoading();
 		return this.httpClient.post(this.baseURL + 'login', loginData);
+	}
+
+	public logout() {
+		this.showLoading();
+		return this.httpClient.get(this.baseURL + 'logout');
 	}
 
 	public resetRequest(email: string) {
@@ -35,7 +41,13 @@ export class LogresWebService {
 		return this.httpClient.post(this.baseURL + 'password/reset', resetData);
 	}
 
+	public profile() {
+		this.showLoading();
+		return this.httpClient.get(this.baseURL + 'profile');
+	}
+
 	private showLoading() {
+		this.sendingReq = true;
 		this.pnotify.alert({
 			text: 'Please wait...',
 			type: 'info',

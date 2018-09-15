@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LogresWebService } from '../services/logresweb.service';
 import { PNotifyService } from '../services/pnotify.service';
+import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-login',
@@ -23,7 +25,9 @@ export class LoginComponent {
 	constructor(
 		public formBuilder: FormBuilder,
 		public logresWebService: LogresWebService,
-		public pnotifyService: PNotifyService) {
+		public pnotifyService: PNotifyService,
+		public userService: UserService,
+		public router: Router) {
 
 		this.loginFormActive = true;
 		this.loginForm = formBuilder.group({
@@ -35,20 +39,41 @@ export class LoginComponent {
 			resetEmail: ["", Validators.compose([Validators.required, Validators.email])]
 		});
 
-		this.resetReqForm.controls['resetEmail'].valueChanges.subscribe((value) => {
-			this.formError = false;
-			this.formErrMsg = "";
-		});
-
 		this.pnotify = this.pnotifyService.getPNotify();
 	}
 
 	login() {
-
+		let loginData = {
+			email: this.loginForm.controls.email.value,
+			password: this.loginForm.controls.password.value
+		};
+		this.logresWebService.login(loginData).subscribe((response) => {
+			console.log("login() :: Success response: ", response);
+			this.logresWebService.sendingReq = false;
+			this.pnotify.closeAll();
+			if (response['success'] === true) {
+				this.userService.saveToken(response['token']);
+				this.pnotify.alert({
+					title: 'Login Successful',
+					type: 'success'
+				});
+				this.router.navigate(['profile']);
+				return;
+			}
+		}, (errResponse) => {
+			console.log("login() :: Error response: ", errResponse);
+			this.logresWebService.sendingReq = false;
+			this.pnotify.closeAll();
+			if (errResponse.error['success'] === false) {
+				this.formError = true;
+				this.formErrMsg = typeof errResponse.error['error'] === 'object' ?
+					errResponse.error.error['email'] : errResponse.error['error'];
+				return;
+			}
+		});
 	}
 
 	resetRequest() {
-		this.logresWebService.sendingReq = true;
 		this.logresWebService.resetRequest(this.resetReqForm.controls.resetEmail.value).subscribe((response) => {
 			console.log("resetRequest() :: Success response: ", response);
 			this.logresWebService.sendingReq = false;
@@ -69,9 +94,9 @@ export class LoginComponent {
 
 		}, (errResponse) => {
 			console.log("resetRequest() :: Error response: ", errResponse);
+			this.logresWebService.sendingReq = false;
+			this.pnotify.closeAll();
 			if (errResponse.error['success'] === false) {
-				this.pnotify.closeAll();
-				this.logresWebService.sendingReq = false;
 				this.formError = true;
 				this.formErrMsg = errResponse.error['error'];
 				return;

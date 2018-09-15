@@ -32,15 +32,6 @@ export class ResetPasswordComponent {
 			password2: ["", Validators.compose([Validators.required])],
 		});
 
-		this.resetPassForm.controls['password'].valueChanges.subscribe((value) => {
-			this.formError = false;
-			this.formErrMsg = "";
-		});
-		this.resetPassForm.controls['password2'].valueChanges.subscribe((value) => {
-			this.formError = false;
-			this.formErrMsg = "";
-		});
-
 		this.pnotify = this.pnotifyService.getPNotify();
 
 		this.activeRoute.queryParams.subscribe((params) => {
@@ -67,8 +58,6 @@ export class ResetPasswordComponent {
 			reset_code: this.resetToken,
 			password: this.resetPassForm.controls.password.value
 		};
-
-		this.logresWebService.sendingReq = true;
 		this.logresWebService.resetPassword(resetData).subscribe((response) => {
 			console.log("resetPassword() :: Success response: ", response);
 			this.logresWebService.sendingReq = false;
@@ -84,14 +73,13 @@ export class ResetPasswordComponent {
 			}
 		}, (errResponse) => {
 			console.log("resetPassword() :: Error response: ", errResponse);
+			this.logresWebService.sendingReq = false;
+			this.pnotify.closeAll();
 			if (errResponse.error['success'] === false) {
-				this.pnotify.closeAll();
 				this.formError = true;
 				this.formErrMsg = errResponse.error['error'];
-				this.logresWebService.sendingReq = false;
 				return;
 			}
-
 		});
 	}
 
