@@ -21,6 +21,7 @@ import { UserService } from './services/user.service';
 import { AuthGuard } from './guards/auth.guard';
 import { NotLoggedInGuard } from './guards/not-logged-in.guard';
 import { TokenInterceptor } from './helpers/token.interceptor';
+import { RefreshTokenInterceptor } from './helpers/refresh-token.interceptor';
 
 
 @NgModule({
@@ -48,6 +49,11 @@ import { TokenInterceptor } from './helpers/token.interceptor';
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: TokenInterceptor,
+			multi: true
+		},
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: RefreshTokenInterceptor,
 			multi: true
 		}
 	],

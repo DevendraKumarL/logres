@@ -54,13 +54,13 @@ export class AppComponent {
 			console.log("logout() :: Error response: ", errResponse);
 			this.logresWebService.sendingReq = false;
 			this.pnotify.closeAll();
-			if (errResponse.error['success'] === false) {
-				this.pnotify.alert({
-					text: errResponse.error['error'],
-					type: 'error'
-				});
-				return;
-			}
+			this.userService.logout();
+			this.pnotify.alert({
+				text: 'Logged out with errors',
+				type: 'notice'
+			});
+			this.router.navigate(['/']);
+			return;
 		});
 	}
 

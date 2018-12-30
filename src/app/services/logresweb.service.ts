@@ -8,6 +8,7 @@ export class LogresWebService {
 	private baseURL: string = 'http://localhost:8000/api/v1/user/';
 	private pnotify: any;
 	public sendingReq: boolean = false;
+	public showWelcomeMsg: boolean = true;
 
 	constructor(
 		private httpClient: HttpClient,
@@ -44,6 +45,10 @@ export class LogresWebService {
 	public profile() {
 		this.showLoading();
 		return this.httpClient.get(this.baseURL + 'profile');
+	}
+
+	public authenticate() {
+		return this.httpClient.get(this.baseURL + 'auth');
 	}
 
 	private showLoading() {

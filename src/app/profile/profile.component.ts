@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { PNotifyService } from '../services/pnotify.service';
+import { Router } from '@angular/router';
 import { LogresWebService } from '../services/logresweb.service';
 import { UserService } from '../services/user.service';
 
@@ -19,7 +20,8 @@ export class ProfileComponent {
 	constructor(
 		public pnotifyService: PNotifyService,
 		public logresWebSerivce: LogresWebService,
-		public userService: UserService) {
+		public userService: UserService,
+		public router: Router) {
 
 		this.pnotify = this.pnotifyService.getPNotify();
 		this.getProfileInfo();
@@ -39,6 +41,7 @@ export class ProfileComponent {
 			console.log("getProfileInfo() :: Error response: ", errResponse);
 			this.logresWebSerivce.sendingReq = false;
 			this.pnotify.closeAll();
+			// FIXME: error response handling
 			if (errResponse.error['success'] === false) {
 				this.profileErr = true;
 				this.errMsg = errResponse.error['error'];
