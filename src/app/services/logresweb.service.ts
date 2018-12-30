@@ -9,6 +9,7 @@ export class LogresWebService {
 	private pnotify: any;
 	public sendingReq: boolean = false;
 	public showWelcomeMsg: boolean = true;
+	public userSearchData: any = [];
 
 	constructor(
 		private httpClient: HttpClient,
@@ -49,6 +50,11 @@ export class LogresWebService {
 
 	public authenticate() {
 		return this.httpClient.get(this.baseURL + 'auth');
+	}
+
+	public search(query: string) {
+		this.userSearchData = [];
+		return this.httpClient.get(this.baseURL + 'search?query=' + query);
 	}
 
 	private showLoading() {

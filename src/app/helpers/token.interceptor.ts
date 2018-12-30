@@ -14,6 +14,9 @@ export class TokenInterceptor implements HttpInterceptor {
 	constructor(private userService: UserService) {}
 
 	intercept(request: HttpRequest<any>, next: HttpHandler) : Observable<HttpEvent<any>> {
+		if (request.url.includes('query')) {
+			return next.handle(request);
+		}
 		if (this.userService.isLoggedIn()) {
 			console.log("intercept() User is Logged In");
 			let token = this.userService.getToken();

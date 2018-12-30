@@ -12,10 +12,13 @@
 			<ul class="navbar-nav ml-auto">
 				<form action="#" class="form-inline" *ngIf="userService.userLoggedIn">
 					<div class="input-group mr-3">
-						<input type="search" class="form-control form-control-sm" placeholder="Search...">
+						<input type="text" class="form-control form-control-sm" placeholder="Search..." list="search-list" (input)="searchSubject.next($event.target.value)">
 						<div class="input-group-append">
 							<button type="button" class="btn btn-outline-primary btn-sm"><i class="fas fa-search"></i></button>
 						</div>
+						<datalist id="search-list">
+							<option *ngFor="let data of logresWebService.userSearchData" [value]="data.name"></option>
+						</datalist>
 					</div>
 				</form>
 				<li class="nav-item" [routerLinkActive]="'active'" *ngIf="!userService.userLoggedIn">
